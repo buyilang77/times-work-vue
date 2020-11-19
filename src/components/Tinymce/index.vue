@@ -205,7 +205,7 @@ export default {
             'image_url': capture
           }).then(function(response) {
             image_path = response.data.image_path
-            image_link = process.env.VUE_APP_DOMAIN + '/storage/' + image_path
+            image_link = process.env.VUE_APP_RESOURCE_DOMAIN + '/storage/' + image_path
           })
           return match.replace(/src="[^"]+"/gi, `src="${image_link}"`)
         }

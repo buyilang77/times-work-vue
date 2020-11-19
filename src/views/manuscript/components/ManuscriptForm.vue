@@ -28,7 +28,7 @@
             <el-form-item>
               <el-upload
                 ref="upload"
-                action="http://work.shidaicm.com/api/upload/file"
+                action="http://api.work.shidaicm.com/upload/file"
                 :headers="getToken()"
                 :on-preview="handlePreview"
                 :on-success="handleSuccess"
@@ -78,7 +78,7 @@ const defaultForm = {
   title: null,
   content: null,
   article_link: null,
-  channel_id: null,
+  channel_id: undefined,
   customer: null,
   file_list: [],
   is_review: false,
@@ -176,7 +176,7 @@ export default {
       this.postForm.file_list.push({ name: file.name, url: response.data.file_path })
     },
     handlePreview(file) {
-      const url = file.url.replace('public', process.env.VUE_APP_DOMAIN + '/storage')
+      const url = file.url.replace('public', process.env.VUE_APP_RESOURCE_DOMAIN + '/storage')
       window.open(url)
     },
     submitUpload() {

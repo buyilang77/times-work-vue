@@ -37,15 +37,8 @@ module.exports = {
       errors: true
     },
     proxy: {
-      [process.env.VUE_APP_BASE_API + '/home/workflow']: {
-        target: 'http://www.shidaicm.com',
-        changeOrigin: true,
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      },
       [process.env.VUE_APP_BASE_API]: {
-        target: 'http://work.shidaicm.com/api',
+        target: 'http://api.work.shidaicm.com/',
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
