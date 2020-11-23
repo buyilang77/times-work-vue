@@ -32,6 +32,11 @@
           <span>{{ row.writing_editor }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="审稿人" width="110" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.reviewer }}</span>
+        </template>
+      </el-table-column>
       <el-table-column class-name="status-col" label="状态" width="110" align="center">
         <template slot-scope="{row}">
           <el-tag size="small" :type="row.status | statusFilter" effect="plain">{{ row.status | statusText }}</el-tag>
@@ -44,14 +49,11 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-if="checkPermission(['text_editor']) || isPending" type="primary" size="mini" @click="handleEdit(row.id)">
+          <el-button v-if="checkPermission(['text_editor', 'writing_editor']) || isPending" type="primary" size="mini" @click="handleEdit(row.id)">
             编辑
           </el-button>
-          <el-button v-permission="['advanced_editor']" type="primary" size="mini" @click="handleEdit(row.id)">
-            查看
-          </el-button>
-          <el-button v-if="checkPermission(['writing_editor']) && !isPending" :disabled="row.status !== 0" type="primary" size="mini" @click="handleStatus(row.id)">
-            处理
+          <el-button v-if="checkPermission(['writing_editor']) && isList" :disabled="row.status !== 0" type="primary" size="mini" @click="handleStatus(row)">
+            领取
           </el-button>
           <el-button v-permission="['text_editor']" :disabled="row.status !== 0" type="danger" size="mini" @click="handleDestroy(row)">
             删除
@@ -97,6 +99,7 @@ export default {
     return {
       list: null,
       total: 0,
+      isList: false,
       isPending: false,
       isReview: false,
       listQuery: {
@@ -112,6 +115,9 @@ export default {
   },
   created() {
     switch (this.$route.name) {
+      case 'ManuscriptList':
+        this.isList = true
+        break
       case 'ManuscriptPending':
         this.isPending = true
         this.listQuery.filter['workflow.status'] = [1, 2, 3]
@@ -134,8 +140,9 @@ export default {
     handleEdit(id) {
       this.$router.push('/manuscript/edit/' + id)
     },
-    handleStatus(id) {
-      updateManuscriptStatus(id, { status: 1 }).then(response => {
+    handleStatus(row) {
+      updateManuscriptStatus(row.id, { status: 1 }).then(response => {
+        row.status = 1
         this.$notify({
           title: 'Success',
           message: response.message,

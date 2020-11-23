@@ -71,6 +71,14 @@ export function downloadImage(data) {
   })
 }
 
+export function uploadFile(data) {
+  return request({
+    url: '/upload/file',
+    method: 'post',
+    data
+  })
+}
+
 export function reviewStatus(id, data) {
   return request({
     url: '/manuscripts-workflow/reviews/' + id,

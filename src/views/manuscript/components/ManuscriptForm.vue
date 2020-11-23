@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <div class="grid-content bg-purple">
-            <el-form-item label="链接" prop="article_link">
+            <el-form-item label="链接">
               <el-input v-model="postForm.article_link" style="width: 82%" />
               <el-button plain style="width: 18%" :loading="importLoading" @click="importManuscript">导入</el-button>
             </el-form-item>
@@ -22,26 +22,28 @@
               <el-input v-model="postForm.customer" />
             </el-form-item>
             <el-form-item label="稿件要求">
-              <el-input v-model="postForm.remark" />
+              <el-input v-model="postForm.remark" type="textarea" />
             </el-form-item>
             <el-divider />
+            <el-alert type="warning" description="保存前请检查材料是否上传到服务器!" :closable="false" show-icon style="margin-bottom: 1rem" />
             <el-form-item>
               <el-upload
                 ref="upload"
-                action="http://api.work.shidaicm.com/upload/file"
-                :headers="getToken()"
+                action=""
                 :on-preview="handlePreview"
                 :on-success="handleSuccess"
+                :on-remove="handleRemove"
                 :before-remove="beforeRemove"
+                :http-request="handleFile"
                 :file-list="postForm.file_list"
                 accept=".jpg, .jpeg, .png, .zip, .rar, .doc, .docx"
                 :auto-upload="false"
               >
                 <el-button slot="trigger" size="small" type="primary">选取材料</el-button>
                 <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-                <div slot="tip" class="el-upload__tip">单文件不可超过50M</div>
               </el-upload>
             </el-form-item>
+            <el-divider />
             <el-form-item class="text-center submit-button">
               <el-button plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
               <el-button v-permission="['advanced_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
@@ -68,8 +70,7 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
-import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList } from '@/api/manuscript'
-import { getAccessToken } from '@/utils/auth' // get token from cookie
+import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList, uploadFile } from '@/api/manuscript'
 import permission from '@/directive/permission/index' // 权限判断指令
 
 const defaultForm = {
@@ -106,7 +107,6 @@ export default {
       rules: {
         title: [{ required: true, message: '稿件名称不可为空!', trigger: 'blur' }],
         media_id: [{ required: true, message: '媒体不可为空!', trigger: 'change' }],
-        article_link: [{ required: true, message: '链接不可为空!', trigger: 'blur' }]
       }
     }
   },
@@ -124,9 +124,6 @@ export default {
     })
   },
   methods: {
-    getToken() {
-      return { Authorization: 'Bearer ' + getAccessToken() }
-    },
     onSubmit() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
@@ -182,8 +179,18 @@ export default {
     submitUpload() {
       this.$refs.upload.submit()
     },
+    handleRemove(file, fileList) {
+      this.postForm.file_list = fileList
+    },
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    handleFile(file) {
+      const formData = new FormData()
+      formData.set('file', file.file)
+      uploadFile(formData).then(response => {
+        this.handleSuccess(response, file.file)
+      })
     },
     handleChannelChanges(value) {
       fetchChannelList({ media_id: value }).then(response => {
@@ -213,8 +220,8 @@ export default {
     font-size: 1rem;
     font-weight: 700;
   }
-  .submit-button button {
-    width: 120px
+  .el-form-item__content {
+    line-height: unset;
   }
 </style>
 
