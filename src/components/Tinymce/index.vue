@@ -67,13 +67,7 @@ export default {
       hasInit: false,
       tinymceId: this.id,
       fullscreen: false,
-      handleImageLoading: false,
-      languageTypeList: {
-        'en': 'en',
-        'zh': 'zh_CN',
-        'es': 'es_MX',
-        'ja': 'ja'
-      }
+      handleImageLoading: false
     }
   },
   computed: {
@@ -122,11 +116,13 @@ export default {
       const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
-        language: this.languageTypeList['zh'],
+        language: 'zh_CN',
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
+        fontsize_formats: '11px 12px 14px 16px 18px 24px 36px 48px',
+        font_formats: '微软雅黑=Microsoft YaHei,Helvetica Neue,PingFang SC,sans-serif;苹果苹方=PingFang SC,Microsoft YaHei,sans-serif;宋体=simsun,serif',
         menubar: this.menubar,
         plugins: plugins,
         end_container_on_empty_block: true,
@@ -137,6 +133,7 @@ export default {
         advlist_number_styles: 'default',
         imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
         default_link_target: '_blank',
+        forced_root_block: 'p',
         link_title: false,
         nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
         init_instance_callback: editor => {
@@ -225,6 +222,9 @@ export default {
 .tinymce-container {
   position: relative;
   line-height: normal;
+}
+.tinymce-container p span{
+  font-size: 24px;
 }
 
 .tinymce-container {
