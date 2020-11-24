@@ -63,6 +63,13 @@ export function fetchManuscript(id) {
   })
 }
 
+export function handleDestroy(id) {
+  return request({
+    url: '/manuscripts/' + id,
+    method: 'delete'
+  })
+}
+
 export function downloadImage(data) {
   return request({
     url: '/download/image',

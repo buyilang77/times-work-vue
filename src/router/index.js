@@ -36,13 +36,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
   {
     path: '/',
     component: Layout,
@@ -51,19 +49,39 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '主页', icon: 'dashboard' }
     }]
   }
 ]
 
 export const asyncRoutes = [
   {
+    path: '/customer',
+    component: Layout,
+    redirect: '/customer/index',
+    name: 'Customer',
+    meta: { title: '客户管理', icon: 'user' },
+    children: [
+      {
+        path: 'index',
+        name: 'CustomerList',
+        component: () => import('@/views/customer/index'),
+        meta: { title: '列表', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/manuscript',
     component: Layout,
-    // alwaysShow: true, // will always show the root menu
     name: 'Manuscript',
     meta: { title: '稿件管理', icon: 'el-icon-document' },
     children: [
+      {
+        path: 'index',
+        name: 'ManuscriptList',
+        component: () => import('@/views/manuscript/index'),
+        meta: { title: '稿件池', icon: 'list', roles: ['writing_editor', 'advanced_editor'] }
+      },
       {
         path: 'create',
         name: 'ManuscriptCreat',
@@ -71,22 +89,22 @@ export const asyncRoutes = [
         meta: { title: '创建', icon: 'form', roles: ['text_editor'] }
       },
       {
-        path: 'index',
-        name: 'ManuscriptList',
-        component: () => import('@/views/manuscript/index'),
-        meta: { title: '列表', icon: 'list' }
-      },
-      {
         path: 'pending',
         name: 'ManuscriptPending',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '待处理', icon: 'list', roles: ['writing_editor'] }
+        meta: { title: '我的工作', icon: 'list', roles: ['text_editor', 'writing_editor'] }
       },
       {
         path: 'review',
         name: 'ManuscriptReview',
         component: () => import('@/views/manuscript/index'),
         meta: { title: '待审核', icon: 'list', roles: ['advanced_editor'] }
+      },
+      {
+        path: 'pending',
+        name: 'ManuscriptHistory',
+        component: () => import('@/views/manuscript/index'),
+        meta: { title: '历史稿件', icon: 'list', roles: ['advanced_editor'] }
       },
       {
         path: 'edit/:id(\\d+)',
@@ -104,8 +122,8 @@ export const asyncRoutes = [
     name: 'Permission',
     meta: {
       title: '权限管理',
-      icon: 'lock'
-      // roles: ['admin', 'writing_editor']
+      icon: 'lock',
+      roles: ['admin']
     }
   },
   // 404 page must be placed at the end !!!

@@ -8,6 +8,9 @@
               <el-input v-model="postForm.article_link" style="width: 82%" />
               <el-button plain style="width: 18%" :loading="importLoading" @click="importManuscript">导入</el-button>
             </el-form-item>
+            <el-form-item label="稿件要求">
+              <el-input v-model="postForm.remark" type="textarea" />
+            </el-form-item>
             <el-form-item label="媒体" prop="media_id">
               <el-radio-group v-model="postForm.media_id" @change="handleChannelChanges">
                 <el-radio v-for="medium in media" :key="medium.id" :label="medium.id">{{ medium.name }}</el-radio>
@@ -20,9 +23,6 @@
             </el-form-item>
             <el-form-item label="客户">
               <el-input v-model="postForm.customer" />
-            </el-form-item>
-            <el-form-item label="稿件要求">
-              <el-input v-model="postForm.remark" type="textarea" />
             </el-form-item>
             <el-divider />
             <el-alert type="warning" description="保存前请检查材料是否上传到服务器!" :closable="false" show-icon style="margin-bottom: 1rem" />
@@ -106,7 +106,7 @@ export default {
       loading: false,
       rules: {
         title: [{ required: true, message: '稿件名称不可为空!', trigger: 'blur' }],
-        media_id: [{ required: true, message: '媒体不可为空!', trigger: 'change' }],
+        media_id: [{ required: true, message: '媒体不可为空!', trigger: 'change' }]
       }
     }
   },
@@ -135,6 +135,7 @@ export default {
                 type: 'success',
                 duration: 3000
               })
+              this.$router.go(-1)
             })
           } else {
             createManuscript(this.postForm).then(response => {
@@ -144,7 +145,7 @@ export default {
                 type: 'success',
                 duration: 3000
               })
-              this.$router.push('/manuscript/index')
+              this.$router.push('/manuscript/pending')
             })
           }
         }
