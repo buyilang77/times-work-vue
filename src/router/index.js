@@ -80,7 +80,7 @@ export const asyncRoutes = [
         path: 'index',
         name: 'ManuscriptList',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '稿件池', icon: 'list', roles: ['writing_editor', 'advanced_editor'] }
+        meta: { title: '稿件池', icon: 'list', roles: ['writing_editor'] }
       },
       {
         path: 'create',
