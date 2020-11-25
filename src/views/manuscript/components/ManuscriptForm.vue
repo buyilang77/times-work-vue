@@ -4,25 +4,9 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <div class="grid-content bg-purple">
-            <el-form-item label="链接">
-              <el-input v-model="postForm.article_link" style="width: 82%" />
+            <el-form-item label="材料">
+              <el-input v-model="postForm.article_link" placeholder="微信链接" style="width: 82%" />
               <el-button plain style="width: 18%" :loading="importLoading" @click="importManuscript">导入</el-button>
-            </el-form-item>
-            <el-form-item label="稿件要求">
-              <el-input v-model="postForm.remark" type="textarea" />
-            </el-form-item>
-            <el-form-item label="媒体" prop="media_id">
-              <el-radio-group v-model="postForm.media_id" @change="handleChannelChanges">
-                <el-radio v-for="medium in media" :key="medium.id" :label="medium.id">{{ medium.name }}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="频道" prop="media_channel">
-              <el-select v-model="postForm.channel_id" placeholder="请选择">
-                <el-option v-for="(item, index) in media_channels" :key="index" :label="item.ChannelName" :value="item.ChannelID" />
-              </el-select>
-            </el-form-item>
-            <el-form-item label="客户">
-              <el-input v-model="postForm.customer" />
             </el-form-item>
             <el-divider />
             <el-alert type="warning" description="保存前请检查材料是否上传到服务器!" :closable="false" show-icon style="margin-bottom: 1rem" />
@@ -40,8 +24,24 @@
                 :auto-upload="false"
               >
                 <el-button slot="trigger" size="small" type="primary">选取材料</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">需要点击上传到服务器按钮</el-button>
               </el-upload>
+            </el-form-item>
+            <el-form-item label="媒体" prop="media_id">
+              <el-radio-group v-model="postForm.media_id" @change="handleChannelChanges">
+                <el-radio v-for="medium in media" :key="medium.id" :label="medium.id">{{ medium.name }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item prop="media_channel">
+              <el-select v-model="postForm.channel_id" placeholder="请选择">
+                <el-option v-for="(item, index) in media_channels" :key="index" :label="item.ChannelName" :value="item.ChannelID" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="客户">
+              <el-input v-model="postForm.customer" />
+            </el-form-item>
+            <el-form-item label="稿件要求">
+              <el-input v-model="postForm.remark" type="textarea" />
             </el-form-item>
             <el-divider />
             <el-form-item class="text-center submit-button">
@@ -59,6 +59,7 @@
             </el-form-item>
             <el-form-item style="margin-bottom: 30px;" prop="description">
               <div class="el-form-item__label">内容</div>
+              <el-alert title="如需上传本地图片，在有微信图片的情况下，请先点击右侧处理微信图片，处理完毕后才可以进行上传否则会覆盖本地上传的图片。" type="warning" :closable="false" style="margin-bottom: 1rem" />
               <Tinymce ref="editor" v-model="postForm.content" :height="400" />
             </el-form-item>
           </div>
