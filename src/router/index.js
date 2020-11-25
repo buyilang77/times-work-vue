@@ -55,21 +55,21 @@ export const constantRoutes = [
 ]
 
 export const asyncRoutes = [
-  {
-    path: '/customer',
-    component: Layout,
-    redirect: '/customer/index',
-    name: 'Customer',
-    meta: { title: '客户管理', icon: 'user' },
-    children: [
-      {
-        path: 'index',
-        name: 'CustomerList',
-        component: () => import('@/views/customer/index'),
-        meta: { title: '列表', icon: 'list' }
-      }
-    ]
-  },
+  // {
+  //   path: '/customer',
+  //   component: Layout,
+  //   redirect: '/customer/index',
+  //   name: 'Customer',
+  //   meta: { title: '客户管理', icon: 'user' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'CustomerList',
+  //       component: () => import('@/views/customer/index'),
+  //       meta: { title: '列表', icon: 'list' }
+  //     }
+  //   ]
+  // },
   {
     path: '/manuscript',
     component: Layout,
