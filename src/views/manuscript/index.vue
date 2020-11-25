@@ -121,29 +121,33 @@ export default {
     switch (this.$route.name) {
       case 'ManuscriptList':
         this.isList = true
-        this.listQuery.filter['workflow.status'] = [0, 2]
+        this.listQuery.filter['workflow.status'] = [0]
         break
-      case 'ManuscriptPending':
+      case 'ManuscriptToDo':
         this.isPending = true
-        this.listQuery.filter['workflow.status'] = [0, 1, 2, 3]
+        this.listQuery.filter['workflow.status'] = [1, 3]
+        switch (store.getters.type) {
+          case 1:
+            this.listQuery.filter['workflow.text_editor_id'] = store.getters.user_id
+            break
+          case 2:
+            this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
+            break
+        }
         break
       case 'ManuscriptReview':
         this.isPending = true
-        this.listQuery.filter['workflow.status'] = [0, 1, 2, 3]
+        this.listQuery.filter['workflow.status'] = [2]
         break
       case 'ManuscriptHistory':
         this.listQuery.filter['workflow.status'] = [4]
+
+        this.listQuery.filter['workflow.reviewer_id'] = store.getters.user_id
         break
-    }
-    if (this.$route.name !== 'ManuscriptList') {
-      switch (store.getters.type) {
-        case 1:
-          this.listQuery.filter['workflow.text_editor_id'] = store.getters.user_id
-          break
-        case 2:
-          this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
-          break
-      }
+      case 'ManuscriptPending':
+        this.listQuery.filter['workflow.status'] = [2]
+        this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
+        break
     }
     this.getList()
   },

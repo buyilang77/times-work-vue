@@ -89,8 +89,8 @@ export const asyncRoutes = [
         meta: { title: '创建', icon: 'form', roles: ['text_editor'] }
       },
       {
-        path: 'pending',
-        name: 'ManuscriptPending',
+        path: 'todo',
+        name: 'ManuscriptToDo',
         component: () => import('@/views/manuscript/index'),
         meta: { title: '我的工作', icon: 'list', roles: ['text_editor', 'writing_editor'] }
       },
@@ -102,9 +102,15 @@ export const asyncRoutes = [
       },
       {
         path: 'pending',
+        name: 'ManuscriptPending',
+        component: () => import('@/views/manuscript/index'),
+        meta: { title: '待审核', icon: 'list', roles: ['writing_editor'] }
+      },
+      {
+        path: 'history',
         name: 'ManuscriptHistory',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '历史稿件', icon: 'list', roles: ['advanced_editor'] }
+        meta: { title: '历史稿件', icon: 'list', roles: ['writing_editor', 'advanced_editor'] }
       },
       {
         path: 'edit/:id(\\d+)',
