@@ -15,6 +15,7 @@
  * https://panjiachen.github.io/vue-element-admin-site/feature/component/rich-editor.html#tinymce
  */
 import { downloadImage } from '@/api/manuscript'
+import { image } from '@/api/upload'
 import plugins from './plugins'
 import toolbar from './toolbar'
 import load from './dynamicLoadScript'
@@ -116,6 +117,7 @@ export default {
       const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
+        content_style: 'body { font-size: 24px;}',
         language: 'zh_CN',
         height: this.height,
         body_class: 'panel-body ',
@@ -158,12 +160,12 @@ export default {
         images_upload_handler(blobInfo, success, failure, progress) {
           progress(0)
           const formData = new FormData()
-          formData.set('file', blobInfo.blob())
-          // image(formData).then((response) => {
-          //   const domain = process.env.VUE_APP_DOMAIN
-          //   success(domain + response.data.path)
-          //   progress(100)
-          // })
+          formData.set('image', blobInfo.blob())
+          image(formData).then((response) => {
+            const url = response.data.image_path.replace('public', process.env.VUE_APP_RESOURCE_DOMAIN + 'storage')
+            success(url)
+            progress(100)
+          })
         }
       })
     },
@@ -202,7 +204,7 @@ export default {
             'image_url': capture
           }).then(function(response) {
             image_path = response.data.image_path
-            image_link = process.env.VUE_APP_RESOURCE_DOMAIN + '/storage/' + image_path
+            image_link = process.env.VUE_APP_RESOURCE_DOMAIN + 'storage/' + image_path
           })
           return match.replace(/src="[^"]+"/gi, `src="${image_link}"`)
         }
