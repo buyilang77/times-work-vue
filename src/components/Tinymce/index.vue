@@ -137,6 +137,7 @@ export default {
         default_link_target: '_blank',
         forced_root_block: 'p',
         link_title: false,
+        paste_data_images: true,
         nonbreaking_force_tab: true, // inserting nonbreaking space &nbsp; need Nonbreaking Space Plugin
         init_instance_callback: editor => {
           if (_this.value) {
