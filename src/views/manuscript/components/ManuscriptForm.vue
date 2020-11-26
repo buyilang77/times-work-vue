@@ -32,7 +32,7 @@
                 <el-radio v-for="medium in media" :key="medium.id" :label="medium.id">{{ medium.name }}</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item prop="media_channel">
+            <el-form-item prop="channel_id">
               <el-select v-model="postForm.channel_id" placeholder="请选择">
                 <el-option v-for="(item, index) in media_channels" :key="index" :label="item.ChannelName" :value="item.ChannelID" />
               </el-select>
@@ -107,7 +107,8 @@ export default {
       loading: false,
       rules: {
         title: [{ required: true, message: '稿件名称不可为空!', trigger: 'blur' }],
-        media_id: [{ required: true, message: '媒体不可为空!', trigger: 'change' }]
+        media_id: [{ required: true, message: '媒体不可为空!', trigger: 'change' }],
+        channel_id: [{ required: true, message: '频道不可为空!', trigger: 'change' }]
       }
     }
   },
