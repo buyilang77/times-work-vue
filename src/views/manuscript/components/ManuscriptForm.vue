@@ -146,7 +146,7 @@ export default {
                 type: 'success',
                 duration: 3000
               })
-              this.$router.push('/manuscript/pending')
+              this.$router.push('/manuscript/todo')
             })
           }
         }

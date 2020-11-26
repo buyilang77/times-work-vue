@@ -125,7 +125,7 @@ export default {
         break
       case 'ManuscriptToDo':
         this.isPending = true
-        this.listQuery.filter['workflow.status'] = [1, 3]
+        this.listQuery.filter['workflow.status'] = [0, 1, 3]
         switch (store.getters.type) {
           case 1:
             this.listQuery.filter['workflow.text_editor_id'] = store.getters.user_id
