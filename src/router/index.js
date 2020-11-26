@@ -92,7 +92,13 @@ export const asyncRoutes = [
         path: 'todo',
         name: 'ManuscriptToDo',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '我的工作', icon: 'list', roles: ['text_editor', 'writing_editor'] }
+        meta: { title: '我的工作', icon: 'list', roles: ['writing_editor'] }
+      },
+      {
+        path: 'todo',
+        name: 'ManuscriptToDo',
+        component: () => import('@/views/manuscript/index'),
+        meta: { title: '我的稿件', icon: 'list', roles: ['text_editor'] }
       },
       {
         path: 'review',
