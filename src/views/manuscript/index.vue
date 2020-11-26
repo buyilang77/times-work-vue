@@ -141,8 +141,17 @@ export default {
         break
       case 'ManuscriptHistory':
         this.listQuery.filter['workflow.status'] = [4]
-
-        this.listQuery.filter['workflow.reviewer_id'] = store.getters.user_id
+        switch (store.getters.type) {
+          case 1:
+            this.listQuery.filter['workflow.text_editor_id'] = store.getters.user_id
+            break
+          case 2:
+            this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
+            break
+          case 3:
+            this.listQuery.filter['workflow.reviewer_id'] = store.getters.user_id
+            break
+        }
         break
       case 'ManuscriptPending':
         this.listQuery.filter['workflow.status'] = [2]

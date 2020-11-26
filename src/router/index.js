@@ -116,7 +116,7 @@ export const asyncRoutes = [
         path: 'history',
         name: 'ManuscriptHistory',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '历史稿件', icon: 'list', roles: ['writing_editor', 'advanced_editor'] }
+        meta: { title: '历史稿件', icon: 'list', roles: ['text_editor', 'writing_editor', 'advanced_editor'] }
       },
       {
         path: 'edit/:id(\\d+)',

@@ -9,6 +9,7 @@
       <el-link href="https://jinshuju.net/f/mvdvfw" :underline="false" style="margin-right: 20px" target="_blank">成单上报</el-link>
       <el-link href="https://jinshuju.net/f/WHwW9C" :underline="false" style="margin-right: 20px" target="_blank">年合作</el-link>
       <el-link href="https://jinshuju.net/f/uaUbuJ" :underline="false" style="margin-right: 20px" target="_blank">全媒体合作</el-link>
+      <el-link type="info" :underline="false" style="margin-right: 20px">你好, {{ name }}</el-link>
       <el-link :underline="false" style="margin-right: 20px" @click="logout"><i class="el-icon-switch-button" /> 退出</el-link>
     </div>
   </div>
@@ -26,6 +27,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'name',
       'sidebar',
       'avatar'
     ])
