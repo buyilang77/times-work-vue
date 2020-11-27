@@ -44,7 +44,13 @@
               <el-button v-loading="loading" plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
               <el-button v-permission="['advanced_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
               <el-button v-permission="['advanced_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
-              <el-button v-if="checkPermission(['writing_editor']) && postForm.workflow.status === 1" plain type="primary" @click="onSubmit(postForm.is_review = true)">提交审核</el-button>
+              <el-button
+                v-if="postForm.workflow.status === 1 || postForm.workflow.status === 3"
+                v-permission="['writing_editor']"
+                plain
+                type="primary"
+                @click="onSubmit(postForm.is_review = true)"
+              >提交审核</el-button>
             </el-form-item>
           </div>
         </el-col>
