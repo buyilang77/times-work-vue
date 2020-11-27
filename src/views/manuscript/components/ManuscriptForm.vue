@@ -42,8 +42,8 @@
             <el-divider />
             <el-form-item class="text-center submit-button">
               <el-button v-loading="loading" plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
-              <el-button v-permission="['advanced_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
-              <el-button v-permission="['advanced_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
+              <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
+              <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
               <el-button
                 v-if="postForm.workflow.status === 1 || postForm.workflow.status === 3"
                 v-permission="['writing_editor']"
