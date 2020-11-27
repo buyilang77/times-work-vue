@@ -104,7 +104,7 @@ export const asyncRoutes = [
         path: 'review',
         name: 'ManuscriptReview',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '待审核', icon: 'list', roles: ['advanced_editor'] }
+        meta: { title: '待审核', icon: 'list', roles: ['advanced_editor', 'chief_editor'] }
       },
       {
         path: 'pending',
@@ -122,8 +122,14 @@ export const asyncRoutes = [
         path: 'edit/:id(\\d+)',
         name: 'ManuscriptEdit',
         component: () => import('@/views/manuscript/edit'),
-        meta: { title: '编辑稿件', activeMenu: '/example/list' },
+        meta: { title: '编辑稿件' },
         hidden: true
+      },
+      {
+        path: 'progress',
+        name: 'ManuscriptProgress',
+        component: () => import('@/views/manuscript/index'),
+        meta: { title: '工作进度', icon: 'list', roles: ['chief_editor'], activeMenu: '/manuscript/progress' }
       }
     ]
   },
