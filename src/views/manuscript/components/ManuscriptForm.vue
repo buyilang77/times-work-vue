@@ -48,7 +48,7 @@
               <el-button plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
               <el-button v-permission="['advanced_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
               <el-button v-permission="['advanced_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
-              <el-button v-permission="['writing_editor']" plain type="primary" @click="onSubmit(postForm.is_review = true)">提交审核</el-button>
+              <el-button v-if="checkPermission(['writing_editor']) && postForm.workflow.status === 1" plain type="primary" @click="onSubmit(postForm.is_review = true)">提交审核</el-button>
             </el-form-item>
           </div>
         </el-col>
@@ -73,6 +73,7 @@
 import Tinymce from '@/components/Tinymce'
 import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList, uploadFile } from '@/api/manuscript'
 import permission from '@/directive/permission/index' // 权限判断指令
+import checkPermission from '@/utils/permission' // 权限判断函数
 
 const defaultForm = {
   id: null,
@@ -80,11 +81,12 @@ const defaultForm = {
   title: null,
   content: null,
   article_link: null,
-  channel_id: undefined,
+  channel_id: 0,
   customer: null,
   file_list: [],
   is_review: false,
   thumbnail: null,
+  workflow: [],
   remark: null
 }
 export default {
@@ -126,6 +128,7 @@ export default {
     })
   },
   methods: {
+    checkPermission,
     onSubmit() {
       this.$refs['form'].validate((valid) => {
         if (valid) {

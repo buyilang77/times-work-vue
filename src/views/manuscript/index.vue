@@ -49,7 +49,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-if="checkPermission(['text_editor', 'writing_editor', 'advanced_editor']) || isPending" type="primary" size="mini" @click="handleEdit(row.id)">
+          <el-button v-if="isPending || isToDo" type="primary" size="mini" @click="handleEdit(row.id)">
             编辑
           </el-button>
           <el-button v-if="checkPermission(['writing_editor', 'advanced_editor']) && isList" :disabled="row.status !== 0 && row.status !== 2" type="primary" size="mini" @click="handleStatus(row)">
@@ -102,6 +102,7 @@ export default {
       list: null,
       total: 0,
       isList: false,
+      isToDo: false,
       isPending: false,
       isReview: false,
       listQuery: {
@@ -124,7 +125,7 @@ export default {
         this.listQuery.filter['workflow.status'] = [0]
         break
       case 'ManuscriptToDo':
-        this.isPending = true
+        this.isToDo = true
         this.listQuery.filter['workflow.status'] = [0, 1, 3]
         switch (store.getters.type) {
           case 1:
@@ -154,6 +155,7 @@ export default {
         }
         break
       case 'ManuscriptPending':
+        this.isPending = true
         this.listQuery.filter['workflow.status'] = [2]
         this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
         break
