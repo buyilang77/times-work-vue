@@ -9,10 +9,8 @@
               <el-button plain style="width: 18%" :loading="importLoading" @click="importManuscript">导入</el-button>
             </el-form-item>
             <el-divider />
-            <el-alert type="warning" description="保存前请检查材料是否上传到服务器!" :closable="false" show-icon style="margin-bottom: 1rem" />
             <el-form-item>
               <el-upload
-                ref="upload"
                 action=""
                 :on-preview="handlePreview"
                 :on-success="handleSuccess"
@@ -21,10 +19,8 @@
                 :http-request="handleFile"
                 :file-list="postForm.file_list"
                 accept=".jpg, .jpeg, .png, .zip, .rar, .doc, .docx"
-                :auto-upload="false"
               >
                 <el-button slot="trigger" size="small" type="primary">选取材料</el-button>
-                <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">需要点击上传到服务器按钮</el-button>
               </el-upload>
             </el-form-item>
             <el-form-item label="媒体" prop="media_id">
@@ -45,7 +41,7 @@
             </el-form-item>
             <el-divider />
             <el-form-item class="text-center submit-button">
-              <el-button plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
+              <el-button v-loading="loading" plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
               <el-button v-permission="['advanced_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
               <el-button v-permission="['advanced_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
               <el-button v-if="checkPermission(['writing_editor']) && postForm.workflow.status === 1" plain type="primary" @click="onSubmit(postForm.is_review = true)">提交审核</el-button>
@@ -180,10 +176,15 @@ export default {
     },
     handlePreview(file) {
       const url = file.url.replace('public', process.env.VUE_APP_RESOURCE_DOMAIN + 'storage')
-      window.open(url)
-    },
-    submitUpload() {
-      this.$refs.upload.submit()
+      this.$copyText(url).then((e) => {
+        this.$message({
+          message: '复制成功!',
+          type: 'success'
+        })
+      }, (e) => {
+        this.$message.error('Can not copy!')
+        console.log(e)
+      })
     },
     handleRemove(file, fileList) {
       this.postForm.file_list = fileList

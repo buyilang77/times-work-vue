@@ -13,8 +13,11 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import VueClipboard from 'vue-clipboard2'
 
 Vue.use(ElementUI)
+VueClipboard.config.autoSetContainer = true // add this line
+Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
 new Vue({
