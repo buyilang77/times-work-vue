@@ -2,6 +2,18 @@
   <div class="app-container">
     <el-form ref="form" :rules="rules" :model="postForm" :label-position="labelPosition">
       <el-row :gutter="20">
+        <el-col :span="17">
+          <div class="grid-content bg-purple">
+            <el-form-item label="标题" prop="title">
+              <el-input v-model="postForm.title" />
+            </el-form-item>
+            <el-form-item style="margin-bottom: 30px;" prop="description">
+              <div class="el-form-item__label">内容</div>
+              <el-alert title="如需上传本地图片，在有微信图片的情况下，请先点击右侧处理微信图片，处理完毕后才可以进行上传否则会覆盖本地上传的图片。" type="warning" :closable="false" style="margin-bottom: 1rem" />
+              <Tinymce ref="editor" v-model="postForm.content" :height="400" />
+            </el-form-item>
+          </div>
+        </el-col>
         <el-col :span="7">
           <div class="grid-content bg-purple">
             <el-form-item label="材料">
@@ -45,7 +57,7 @@
               <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
               <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
               <el-button
-                v-if="postForm.workflow.status === 1 || postForm.workflow.status === 3"
+                v-if="postForm.status === 1 || postForm.status === 3"
                 v-permission="['writing_editor']"
                 plain
                 type="primary"
@@ -56,18 +68,6 @@
               <p>文编: {{ postForm.workflow.writing_editor ? undefined : '未知' }}</p>
               <p>采编: {{ postForm.workflow.text_editor ? undefined : '未知' }}</p>
             </div>
-          </div>
-        </el-col>
-        <el-col :span="17">
-          <div class="grid-content bg-purple">
-            <el-form-item label="标题" prop="title">
-              <el-input v-model="postForm.title" />
-            </el-form-item>
-            <el-form-item style="margin-bottom: 30px;" prop="description">
-              <div class="el-form-item__label">内容</div>
-              <el-alert title="如需上传本地图片，在有微信图片的情况下，请先点击右侧处理微信图片，处理完毕后才可以进行上传否则会覆盖本地上传的图片。" type="warning" :closable="false" style="margin-bottom: 1rem" />
-              <Tinymce ref="editor" v-model="postForm.content" :height="400" />
-            </el-form-item>
           </div>
         </el-col>
       </el-row>
@@ -87,7 +87,7 @@ const defaultForm = {
   title: null,
   content: null,
   article_link: null,
-  channel_id: 0,
+  channel_id: undefined,
   customer: null,
   file_list: [],
   is_review: false,
@@ -115,8 +115,7 @@ export default {
       loading: false,
       rules: {
         title: [{ required: true, message: '稿件名称不可为空!', trigger: 'blur' }],
-        media_id: [{ required: true, message: '媒体不可为空!', trigger: 'change' }],
-        channel_id: [{ required: true, message: '频道不可为空!', trigger: 'change' }]
+        media_id: [{ required: true, message: '媒体不可为空!', trigger: 'change' }]
       }
     }
   },
@@ -149,6 +148,10 @@ export default {
               this.$router.go(-1)
             })
           } else {
+            if (!this.postForm.channel_id && this.postForm.media_id !== 4) {
+              this.$message.error('频道不可为空!')
+              return
+            }
             createManuscript(this.postForm).then(response => {
               this.$notify({
                 title: 'Success',
