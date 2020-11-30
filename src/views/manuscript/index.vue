@@ -19,22 +19,22 @@
       </el-table-column>
       <el-table-column label="媒体" width="110">
         <template slot-scope="{row}">
-          {{ row.media_name }}
+          {{ row.media.name }}
         </template>
       </el-table-column>
       <el-table-column label="采编" width="110" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.text_editor }}</span>
+          <span>{{ row.workflow.text_editor }}</span>
         </template>
       </el-table-column>
       <el-table-column label="文编" width="110" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.writing_editor }}</span>
+          <span>{{ row.workflow.writing_editor }}</span>
         </template>
       </el-table-column>
       <el-table-column label="审稿人" width="110" align="center">
         <template slot-scope="{row}">
-          <span>{{ row.reviewer }}</span>
+          <span>{{ row.workflow.reviewer }}</span>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="状态" width="110" align="center">
@@ -126,7 +126,7 @@ export default {
         break
       case 'ManuscriptToDo':
         this.isToDo = true
-        this.listQuery.filter['workflow.status'] = [0, 1, 3]
+        this.listQuery.filter['workflow.status'] = [0, 1, 2, 3]
         switch (store.getters.type) {
           case 1:
             this.listQuery.filter['workflow.text_editor_id'] = store.getters.user_id

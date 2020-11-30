@@ -52,6 +52,12 @@
                 @click="onSubmit(postForm.is_review = true)"
               >提交审核</el-button>
             </el-form-item>
+            <p>
+              <el-link :underline="false" type="info" @click="doCopy($event)">{{ '采编: ' + postForm.workflow.text_editor }}</el-link>
+            </p>
+            <p>
+              <el-link :underline="false" type="info" @click="doCopy">{{ '文编: ' + postForm.workflow.writing_editor }}</el-link>
+            </p>
           </div>
         </el-col>
         <el-col :span="17">
@@ -166,6 +172,7 @@ export default {
     getManuscript(id) {
       fetchManuscript(id).then(response => {
         this.postForm = response.data
+        this.postForm.media_id = response.data.media.id
         this.handleChannelChanges(this.postForm.media_id)
       })
     },
@@ -182,15 +189,16 @@ export default {
     },
     handlePreview(file) {
       const url = file.url.replace('public', process.env.VUE_APP_RESOURCE_DOMAIN + 'storage')
-      this.$copyText(url).then((e) => {
-        this.$message({
-          message: '复制成功!',
-          type: 'success'
+      if (file.url.substring(file.url.lastIndexOf('.') + 1) === 'jpeg') {
+        this.$copyText(url).then(() => {
+          this.onCopy()
+        }, (e) => {
+          this.$message.error('Can not copy!')
+          console.log(e)
         })
-      }, (e) => {
-        this.$message.error('Can not copy!')
-        console.log(e)
-      })
+      } else {
+        window.open(url)
+      }
     },
     handleRemove(file, fileList) {
       this.postForm.file_list = fileList
@@ -223,6 +231,20 @@ export default {
           })
           this.$router.go(-1)
         })
+    },
+    doCopy(event) {
+      this.$copyText(event.currentTarget.getElementsByTagName('span')[0].innerText).then(() => {
+        this.onCopy()
+      }, (e) => {
+        this.$message.error('Can not copy!')
+        console.log(e)
+      })
+    },
+    onCopy() {
+      this.$message({
+        message: '复制成功!',
+        type: 'success'
+      })
     }
   }
 }
