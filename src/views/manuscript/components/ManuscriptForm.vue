@@ -52,12 +52,10 @@
                 @click="onSubmit(postForm.is_review = true)"
               >提交审核</el-button>
             </el-form-item>
-            <p>
-              <el-link :underline="false" type="info" @click="doCopy($event)">{{ '采编: ' + postForm.workflow.text_editor }}</el-link>
-            </p>
-            <p>
-              <el-link :underline="false" type="info" @click="doCopy">{{ '文编: ' + postForm.workflow.writing_editor }}</el-link>
-            </p>
+            <div @click="doCopy($event)">
+              <p>文编: {{ postForm.workflow.writing_editor ? undefined : '未知' }}</p>
+              <p>采编: {{ postForm.workflow.text_editor ? undefined : '未知' }}</p>
+            </div>
           </div>
         </el-col>
         <el-col :span="17">
@@ -233,7 +231,7 @@ export default {
         })
     },
     doCopy(event) {
-      this.$copyText(event.currentTarget.getElementsByTagName('span')[0].innerText).then(() => {
+      this.$copyText(event.currentTarget.innerText).then(() => {
         this.onCopy()
       }, (e) => {
         this.$message.error('Can not copy!')
