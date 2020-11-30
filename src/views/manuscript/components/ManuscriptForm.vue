@@ -65,8 +65,8 @@
               >提交审核</el-button>
             </el-form-item>
             <div @click="doCopy($event)">
-              <p>文编: {{ postForm.workflow.writing_editor ? undefined : '未知' }}</p>
-              <p>采编: {{ postForm.workflow.text_editor ? undefined : '未知' }}</p>
+              <p>文编: {{ postForm.workflow.writing_editor ? postForm.workflow.writing_editor : '未知' }}</p>
+              <p>采编: {{ postForm.workflow.text_editor ? postForm.workflow.text_editor : '未知' }}</p>
             </div>
           </div>
         </el-col>
