@@ -32,7 +32,7 @@
           <span>{{ row.workflow.writing_editor }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="审稿人" width="110" align="center">
+      <el-table-column v-if="!checkPermission(['text_editor'])" label="审稿人" width="110" align="center">
         <template slot-scope="{row}">
           <span>{{ row.workflow.reviewer }}</span>
         </template>
@@ -55,9 +55,8 @@
           <el-button v-if="checkPermission(['writing_editor', 'advanced_editor']) && isList" :disabled="row.status !== 0 && row.status !== 2" type="primary" size="mini" @click="handleStatus(row)">
             领取
           </el-button>
-          <el-button v-permission="['text_editor']" :disabled="row.status !== 0" type="danger" size="mini" @click="handleDestroy(row)">
-            删除
-          </el-button>
+          <el-button v-permission="['text_editor']" :disabled="row.status !== 0" type="danger" size="mini" @click="handleDestroy(row)">删除</el-button>
+          <el-button v-if="row.status === 4" size="mini" @click="detail(row.id)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -173,6 +172,9 @@ export default {
     },
     handleEdit(id) {
       this.$router.push('/manuscript/edit/' + id)
+    },
+    detail(id) {
+      this.$router.push('/manuscript/detail/' + id)
     },
     handleDestroy(row) {
       handleDestroy(row.id).then(response => {

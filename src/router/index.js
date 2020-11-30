@@ -126,6 +126,13 @@ export const asyncRoutes = [
         hidden: true
       },
       {
+        path: 'detail/:id(\\d+)',
+        name: 'ManuscriptEdit',
+        component: () => import('@/views/manuscript/detail'),
+        meta: { title: '查看详情', activeMenu: '/manuscript/history' },
+        hidden: true
+      },
+      {
         path: 'progress',
         name: 'ManuscriptProgress',
         component: () => import('@/views/manuscript/index'),
