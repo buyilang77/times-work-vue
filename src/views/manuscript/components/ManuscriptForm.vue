@@ -8,7 +8,6 @@
               <el-input v-model="postForm.title" />
             </el-form-item>
             <el-form-item style="margin-bottom: 30px;" prop="description">
-              <div class="el-form-item__label">内容</div>
               <el-alert title="如需上传本地图片，在有微信图片的情况下，请先点击右侧处理微信图片，处理完毕后才可以进行上传否则会覆盖本地上传的图片。" type="warning" :closable="false" style="margin-bottom: 1rem" />
               <Tinymce ref="editor" v-model="postForm.content" :height="400" />
             </el-form-item>
@@ -51,7 +50,6 @@
             <el-form-item label="稿件要求">
               <el-input v-model="postForm.remark" type="textarea" />
             </el-form-item>
-            <el-divider />
             <el-form-item class="text-center submit-button">
               <el-button v-loading="loading" plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
               <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
@@ -64,6 +62,7 @@
                 @click="onSubmit(postForm.is_review = true)"
               >提交审核</el-button>
             </el-form-item>
+            <el-divider />
             <div @click="doCopy($event)">
               <p>文编: {{ postForm.workflow.writing_editor ? postForm.workflow.writing_editor : '未知' }}</p>
               <p>采编: {{ postForm.workflow.text_editor ? postForm.workflow.text_editor : '未知' }}</p>

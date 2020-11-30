@@ -126,12 +126,13 @@ export default {
         break
       case 'ManuscriptToDo':
         this.isToDo = true
-        this.listQuery.filter['workflow.status'] = [0, 1, 3]
         switch (store.getters.type) {
           case 1:
+            this.listQuery.filter['workflow.status'] = [0, 1, 2, 3]
             this.listQuery.filter['workflow.text_editor_id'] = store.getters.user_id
             break
           case 2:
+            this.listQuery.filter['workflow.status'] = [0, 1, 3]
             this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
             break
         }
