@@ -103,7 +103,15 @@ export function cancellation(id) {
 
 export function fetchChannelList(params) {
   return request({
-    url: '/manuscripts-workflow/reviews/channels',
+    url: '/manuscripts-workflow/channels',
+    method: 'get',
+    params
+  })
+}
+
+export function fetchMemberList(params) {
+  return request({
+    url: '/manuscripts-workflow/members',
     method: 'get',
     params
   })

@@ -9,6 +9,7 @@
 <script>
 import { fetchManuscript } from '@/api/manuscript'
 export default {
+  name: 'ManuscriptDetail',
   data() {
     return {
       manuscript: null

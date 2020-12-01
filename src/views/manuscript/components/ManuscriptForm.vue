@@ -35,14 +35,20 @@
               </el-upload>
             </el-form-item>
             <el-form-item label="媒体" prop="media_id">
-              <el-radio-group v-model="postForm.media_id" @change="handleChannelChanges">
+              <el-radio-group v-model="postForm.media_id" @change="handleMediaChanges">
                 <el-radio v-for="medium in media" :key="medium.id" :label="medium.id">{{ medium.name }}</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item prop="channel_id">
-              <el-select v-model="postForm.channel_id" placeholder="请选择">
+            <el-form-item>
+              <el-select v-model="postForm.channel_id" placeholder="请选择频道" style="margin-right: 1rem">
                 <el-option v-for="(item, index) in media_channels" :key="index" :label="item.ChannelName" :value="item.ChannelID" />
               </el-select>
+              <el-select v-model="postForm.member_id" placeholder="请选择成员">
+                <el-option v-for="(item, index) in media_members" :key="index" :label="item.MemberName" :value="item.MemberID" />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="来源">
+              <el-input v-model="postForm.source" />
             </el-form-item>
             <el-form-item label="客户">
               <el-input v-model="postForm.customer" />
@@ -76,7 +82,7 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
-import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList, uploadFile } from '@/api/manuscript'
+import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList, fetchMemberList, uploadFile } from '@/api/manuscript'
 import permission from '@/directive/permission/index' // 权限判断指令
 import checkPermission from '@/utils/permission' // 权限判断函数
 
@@ -87,6 +93,8 @@ const defaultForm = {
   content: null,
   article_link: null,
   channel_id: undefined,
+  member_id: undefined,
+  source: undefined,
   customer: null,
   file_list: [],
   is_review: false,
@@ -108,6 +116,7 @@ export default {
     return {
       media: [],
       media_channels: [],
+      media_members: [],
       importLoading: false,
       labelPosition: 'top',
       postForm: Object.assign({}, defaultForm),
@@ -172,8 +181,8 @@ export default {
     getManuscript(id) {
       fetchManuscript(id).then(response => {
         this.postForm = response.data
-        this.postForm.media_id = response.data.media.id
-        this.handleChannelChanges(this.postForm.media_id)
+        this.postForm.media_id = response.data.media_id
+        this.handleMediaChanges(this.postForm.media_id)
       })
     },
     async importManuscript() {
@@ -213,9 +222,12 @@ export default {
         this.handleSuccess(response, file.file)
       })
     },
-    handleChannelChanges(value) {
+    handleMediaChanges(value) {
       fetchChannelList({ media_id: value }).then(response => {
         this.media_channels = response.data
+      })
+      fetchMemberList({ media_id: value }).then(response => {
+        this.media_members = response.data
       })
     },
     handleReview(status) {

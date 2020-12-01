@@ -6,7 +6,6 @@ import { resetRouter } from '@/router'
 const getDefaultState = () => {
   return {
     access_token: getAccessToken(),
-    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: '',
     username: '',
     type: '',
