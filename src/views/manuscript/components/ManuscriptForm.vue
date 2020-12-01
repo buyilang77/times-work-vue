@@ -31,7 +31,7 @@
                 :file-list="postForm.file_list"
                 accept=".jpg, .jpeg, .png, .zip, .rar, .doc, .docx"
               >
-                <el-button slot="trigger" size="small" type="primary">选取材料</el-button>
+                <el-button slot="trigger" size="small" type="primary">上传材料</el-button>
               </el-upload>
             </el-form-item>
             <el-form-item label="媒体" prop="media_id">

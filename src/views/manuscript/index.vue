@@ -19,7 +19,7 @@
       </el-table-column>
       <el-table-column label="媒体" width="110">
         <template slot-scope="{row}">
-          {{ row.media.name }}
+          {{ row.media_name }}
         </template>
       </el-table-column>
       <el-table-column label="采编" width="110" align="center">
@@ -49,9 +49,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button v-if="isPending || isToDo" type="primary" size="mini" @click="handleEdit(row.id)">
-            编辑
-          </el-button>
+          <el-button v-if="isPending || isToDo || isReview" type="primary" size="mini" @click="handleEdit(row.id)">查看</el-button>
+          <el-button v-if="isToDo" v-permission="['writing_editor']" type="primary" size="mini" @click="handleCancellation(row.id)">退回稿件池</el-button>
+          <el-button v-if="isReview" type="primary" size="mini" @click="handleReview(row)">审核</el-button>
           <el-button v-if="checkPermission(['writing_editor', 'advanced_editor']) && isList" :disabled="row.status !== 0 && row.status !== 2" type="primary" size="mini" @click="handleStatus(row)">
             领取
           </el-button>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { fetchList, updateManuscriptStatus, handleDestroy } from '@/api/manuscript'
+import { fetchList, updateManuscriptStatus, reviewStatus, handleDestroy, cancellation } from '@/api/manuscript'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import permission from '@/directive/permission/index' // 权限判断指令
 import checkPermission from '@/utils/permission' // 权限判断函数
@@ -131,13 +131,13 @@ export default {
             this.listQuery.filter['workflow.text_editor_id'] = store.getters.user_id
             break
           case 2:
-            this.listQuery.filter['workflow.status'] = [0, 1, 3]
+            this.listQuery.filter['workflow.status'] = [1, 3]
             this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
             break
         }
         break
       case 'ManuscriptReview':
-        this.isPending = true
+        this.isReview = true
         this.listQuery.filter['workflow.status'] = [2]
         break
       case 'ManuscriptHistory':
@@ -178,10 +178,7 @@ export default {
     },
     handleDestroy(row) {
       handleDestroy(row.id).then(response => {
-        const itemIndex = this.list.findIndex(item => {
-          return item.id === row.id
-        })
-        this.list.splice(itemIndex, 1)
+        this.removeItem(row.id)
         this.$notify({
           title: 'Success',
           message: response.message,
@@ -189,6 +186,38 @@ export default {
           duration: 3000
         })
       })
+    },
+    handleReview(row) {
+      const form = row
+      form['status'] = 4
+      reviewStatus(row.id, form)
+        .then(response => {
+          this.removeItem(row.id)
+          this.$notify({
+            title: 'Success',
+            message: response.message,
+            type: 'success',
+            duration: 3000
+          })
+        })
+    },
+    handleCancellation(id) {
+      cancellation(id)
+        .then(response => {
+          this.removeItem(id)
+          this.$notify({
+            title: 'Success',
+            message: response.message,
+            type: 'success',
+            duration: 3000
+          })
+        })
+    },
+    removeItem(id) {
+      const index = this.list.findIndex(item => {
+        return item.id === id
+      })
+      this.list.splice(index, 1)
     },
     handleStatus(row) {
       updateManuscriptStatus(row.id, { status: 1 }).then(response => {

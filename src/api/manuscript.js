@@ -94,6 +94,13 @@ export function reviewStatus(id, data) {
   })
 }
 
+export function cancellation(id) {
+  return request({
+    url: '/manuscripts-workflow/cancellation/' + id,
+    method: 'patch'
+  })
+}
+
 export function fetchChannelList(params) {
   return request({
     url: '/manuscripts-workflow/reviews/channels',

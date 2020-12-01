@@ -101,16 +101,16 @@ export const asyncRoutes = [
         meta: { title: '我的稿件', icon: 'list', roles: ['text_editor'] }
       },
       {
-        path: 'review',
-        name: 'ManuscriptReview',
-        component: () => import('@/views/manuscript/index'),
-        meta: { title: '待审核', icon: 'list', roles: ['advanced_editor', 'chief_editor'] }
-      },
-      {
         path: 'pending',
         name: 'ManuscriptPending',
         component: () => import('@/views/manuscript/index'),
         meta: { title: '待审核', icon: 'list', roles: ['writing_editor'] }
+      },
+      {
+        path: 'review',
+        name: 'ManuscriptReview',
+        component: () => import('@/views/manuscript/index'),
+        meta: { title: '审核稿件', icon: 'list', roles: ['advanced_editor', 'chief_editor'] }
       },
       {
         path: 'history',
