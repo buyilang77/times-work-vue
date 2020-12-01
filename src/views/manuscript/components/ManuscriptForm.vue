@@ -43,9 +43,6 @@
               <el-select v-model="postForm.channel_id" placeholder="请选择频道" style="margin-right: 1rem">
                 <el-option v-for="(item, index) in media_channels" :key="index" :label="item.ChannelName" :value="item.ChannelID" />
               </el-select>
-              <el-select v-model="postForm.member_id" placeholder="请选择成员">
-                <el-option v-for="(item, index) in media_members" :key="index" :label="item.MemberName" :value="item.MemberID" />
-              </el-select>
             </el-form-item>
             <el-form-item label="来源">
               <el-input v-model="postForm.source" />
@@ -82,7 +79,7 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
-import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList, fetchMemberList, uploadFile } from '@/api/manuscript'
+import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList, uploadFile } from '@/api/manuscript'
 import permission from '@/directive/permission/index' // 权限判断指令
 import checkPermission from '@/utils/permission' // 权限判断函数
 
@@ -93,7 +90,6 @@ const defaultForm = {
   content: null,
   article_link: null,
   channel_id: undefined,
-  member_id: undefined,
   source: undefined,
   customer: null,
   file_list: [],
@@ -116,7 +112,6 @@ export default {
     return {
       media: [],
       media_channels: [],
-      media_members: [],
       importLoading: false,
       labelPosition: 'top',
       postForm: Object.assign({}, defaultForm),
@@ -225,9 +220,6 @@ export default {
     handleMediaChanges(value) {
       fetchChannelList({ media_id: value }).then(response => {
         this.media_channels = response.data
-      })
-      fetchMemberList({ media_id: value }).then(response => {
-        this.media_members = response.data
       })
     },
     handleReview(status) {

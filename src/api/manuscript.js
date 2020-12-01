@@ -108,11 +108,3 @@ export function fetchChannelList(params) {
     params
   })
 }
-
-export function fetchMemberList(params) {
-  return request({
-    url: '/manuscripts-workflow/members',
-    method: 'get',
-    params
-  })
-}
