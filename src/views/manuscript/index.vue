@@ -12,6 +12,11 @@
           {{ row.id }}
         </template>
       </el-table-column>
+      <el-table-column label="客户">
+        <template slot-scope="{row}">
+          <span>{{ row.customer }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="标题">
         <template slot-scope="{row}">
           {{ row.title }}
@@ -22,7 +27,7 @@
           {{ row.media_name }}
         </template>
       </el-table-column>
-      <el-table-column label="采编" width="110" align="center">
+      <el-table-column v-if="!checkPermission(['text_editor'])" label="采编" width="110" align="center">
         <template slot-scope="{row}">
           <span>{{ row.workflow.text_editor }}</span>
         </template>
