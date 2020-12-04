@@ -75,7 +75,7 @@
       <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button v-if="isPending || isToDo || isReview" type="primary" size="mini" @click="handleEdit(row.id)">查看</el-button>
-          <el-button v-if="isToDo" v-permission="['writing_editor']" type="primary" size="mini" @click="handleCancellation(row.id)">退回稿件池</el-button>
+          <el-button v-if="isToDo" v-permission="['writing_editor', 'advanced_editor']" type="primary" size="mini" @click="handleCancellation(row.id)">退回稿件池</el-button>
           <el-button v-if="isReview" type="primary" size="mini" @click="handleReview(row)">审核</el-button>
           <el-button v-if="checkPermission(['writing_editor', 'advanced_editor']) && isList" :disabled="row.status !== 0 && row.status !== 2" type="primary" size="mini" @click="handleStatus(row)">
             领取
