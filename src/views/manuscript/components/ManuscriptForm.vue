@@ -4,12 +4,11 @@
       <el-row :gutter="20">
         <el-col :span="17">
           <div class="grid-content bg-purple">
-            <el-form-item label="标题" prop="title">
-              <el-input v-model="postForm.title" />
+            <el-form-item prop="title">
+              <el-input v-model="postForm.title" placeholder="标题" />
             </el-form-item>
             <el-form-item style="margin-bottom: 30px;" prop="description">
-              <el-alert title="如需上传本地图片，在有微信图片的情况下，请先点击右侧处理微信图片，处理完毕后才可以进行上传否则会覆盖本地上传的图片。" type="warning" :closable="false" style="margin-bottom: 1rem" />
-              <Tinymce ref="editor" v-model="postForm.content" :height="400" />
+              <Tinymce ref="editor" v-model="postForm.content" />
             </el-form-item>
           </div>
         </el-col>
