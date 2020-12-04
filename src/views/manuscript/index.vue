@@ -47,9 +47,24 @@
           <el-tag size="small" :type="row.status | statusFilter" effect="plain">{{ row.status | statusText }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" width="160">
+      <el-table-column align="center" label="创建时间" width="155">
         <template slot-scope="{row}">
           <span>{{ row.created_at }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="!isList" align="center" label="领取时间" width="155">
+        <template slot-scope="{row}">
+          <span>{{ row.receive_at }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="!isToDo && !isList" align="center" label="提交审核时间" width="155">
+        <template slot-scope="{row}">
+          <span>{{ row.submit_at }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="isHistory" align="center" label="审核时间" width="155">
+        <template slot-scope="{row}">
+          <span>{{ row.review_at }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="240" class-name="small-padding fixed-width">
@@ -109,9 +124,10 @@ export default {
       isToDo: false,
       isPending: false,
       isReview: false,
+      isHistory: false,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 100,
         filter: {
           title: undefined,
           'workflow.status': null,
@@ -146,6 +162,7 @@ export default {
         this.listQuery.filter['workflow.status'] = [2]
         break
       case 'ManuscriptHistory':
+        this.isHistory = true
         this.listQuery.filter['workflow.status'] = [4]
         switch (store.getters.type) {
           case 1:
@@ -225,8 +242,9 @@ export default {
       this.list.splice(index, 1)
     },
     handleStatus(row) {
-      updateManuscriptStatus(row.id, { status: 1 }).then(response => {
+      updateManuscriptStatus(row.id, { status: 1, update_type: 'receive' }).then(response => {
         row.status = 1
+        console.log(response)
         this.$notify({
           title: 'Success',
           message: response.message,

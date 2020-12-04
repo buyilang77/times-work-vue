@@ -53,7 +53,7 @@
               <el-input v-model="postForm.remark" type="textarea" />
             </el-form-item>
             <el-form-item class="text-center submit-button">
-              <el-button v-loading="loading" plain type="primary" @click="onSubmit(postForm.is_review = false)">保存</el-button>
+              <el-button v-loading="loading" plain type="primary" @click="onSubmit()">保存</el-button>
               <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
               <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
               <el-button
@@ -61,7 +61,7 @@
                 v-permission="['writing_editor']"
                 plain
                 type="primary"
-                @click="onSubmit(postForm.is_review = true)"
+                @click="updateStatus"
               >提交审核</el-button>
             </el-form-item>
             <el-divider />
@@ -78,7 +78,7 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
-import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, reviewStatus, fetchChannelList, uploadFile } from '@/api/manuscript'
+import { fetchMedia, fetchArticle, fetchManuscript, createManuscript, updateManuscript, updateManuscriptStatus, reviewStatus, fetchChannelList, uploadFile } from '@/api/manuscript'
 import permission from '@/directive/permission/index' // 权限判断指令
 import checkPermission from '@/utils/permission' // 权限判断函数
 
@@ -92,7 +92,6 @@ const defaultForm = {
   source: undefined,
   customer: null,
   file_list: [],
-  is_review: false,
   thumbnail: null,
   workflow: [],
   remark: null
@@ -178,6 +177,15 @@ export default {
         this.postForm.media_id = response.data.media_id
         this.handleMediaChanges(this.postForm.media_id)
       })
+    },
+    updateStatus() {
+      updateManuscriptStatus(this.postForm.id, { status: 2, update_type: 'review' }).then(response => {
+        this.$message({
+          message: response.message,
+          type: 'success'
+        })
+      })
+      this.$router.go(-1)
     },
     async importManuscript() {
       this.importLoading = true
