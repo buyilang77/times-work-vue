@@ -17,12 +17,17 @@
           <span>{{ row.customer }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="标题">
+      <el-table-column align="center" label="是否合作单位" width="110">
+        <template slot-scope="{row}">
+          <span>{{ row.is_collaborate | collaborateText }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="标题">
         <template slot-scope="{row}">
           {{ row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="媒体" width="110">
+      <el-table-column align="center" label="媒体" width="110">
         <template slot-scope="{row}">
           {{ row.media_name }}
         </template>
@@ -112,6 +117,13 @@ export default {
         2: '审核中',
         3: '未通过',
         4: '已完成'
+      }
+      return statusMap[status]
+    },
+    collaborateText(status) {
+      const statusMap = {
+        0: '否',
+        1: '是'
       }
       return statusMap[status]
     }

@@ -49,6 +49,12 @@
             <el-form-item label="客户">
               <el-input v-model="postForm.customer" />
             </el-form-item>
+            <el-form-item label="是否合作单位">
+              <el-radio-group v-model="postForm.is_collaborate">
+                <el-radio :label="1">是</el-radio>
+                <el-radio :label="0">否</el-radio>
+              </el-radio-group>
+            </el-form-item>
             <el-form-item label="稿件要求">
               <el-input v-model="postForm.remark" type="textarea" />
             </el-form-item>
@@ -91,6 +97,7 @@ const defaultForm = {
   channel_id: undefined,
   source: undefined,
   customer: null,
+  is_collaborate: 1,
   file_list: [],
   thumbnail: null,
   workflow: [],
