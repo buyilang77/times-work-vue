@@ -60,11 +60,11 @@
             </el-form-item>
             <el-form-item class="text-center submit-button">
               <el-button v-loading="loading" plain type="primary" @click="onSubmit()">保存</el-button>
-              <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
-              <el-button v-permission="['advanced_editor', 'chief_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
+              <el-button v-if="postForm.status === 2" v-permission="['advanced_editor', 'chief_editor']" plain type="success" @click="handleReview(4)">通过</el-button>
+              <el-button v-if="postForm.status === 2" v-permission="['advanced_editor', 'chief_editor']" plain type="danger" @click="handleReview(3)">未通过</el-button>
               <el-button
                 v-if="postForm.status === 1 || postForm.status === 3"
-                v-permission="['writing_editor']"
+                v-permission="['writing_editor', 'advanced_editor']"
                 plain
                 type="primary"
                 @click="updateStatus"

@@ -167,6 +167,10 @@ export default {
             this.listQuery.filter['workflow.status'] = [1, 3]
             this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
             break
+          case 3:
+            this.listQuery.filter['workflow.status'] = [1, 3]
+            this.listQuery.filter['workflow.writing_editor_id'] = store.getters.user_id
+            break
         }
         break
       case 'ManuscriptReview':
