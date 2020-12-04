@@ -55,32 +55,21 @@ export const constantRoutes = [
 ]
 
 export const asyncRoutes = [
-  // {
-  //   path: '/customer',
-  //   component: Layout,
-  //   redirect: '/customer/index',
-  //   name: 'Customer',
-  //   meta: { title: '客户管理', icon: 'user' },
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'CustomerList',
-  //       component: () => import('@/views/customer/index'),
-  //       meta: { title: '列表', icon: 'list' }
-  //     }
-  //   ]
-  // },
   {
     path: '/manuscript',
     component: Layout,
     name: 'Manuscript',
-    meta: { title: '稿件管理', icon: 'el-icon-document' },
+    meta: {
+      title: '稿件管理',
+      icon: 'el-icon-document',
+      roles: ['text_editor', 'writing_editor', 'advanced_editor', 'chief_editor']
+    },
     children: [
       {
         path: 'index',
         name: 'ManuscriptList',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '稿件池', icon: 'list', roles: ['writing_editor'] }
+        meta: { title: '稿件池', icon: 'list', roles: ['writing_editor', 'advanced_editor'] }
       },
       {
         path: 'create',
@@ -92,7 +81,7 @@ export const asyncRoutes = [
         path: 'todo',
         name: 'ManuscriptToDo',
         component: () => import('@/views/manuscript/index'),
-        meta: { title: '我的工作', icon: 'list', roles: ['writing_editor'] }
+        meta: { title: '我的工作', icon: 'list', roles: ['writing_editor', 'advanced_editor'] }
       },
       {
         path: 'todo',
